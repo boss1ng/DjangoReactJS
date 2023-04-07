@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'first_app',
     'rest_framework',
     'rest_framework.authtoken',
+    'corsheaders',
 ]
 
 # ADDED (PERMISSIONS. Restrict unauthorized users to access data.)
@@ -60,6 +61,16 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # ADDED
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+]
+
+# ADDED - CORS
+CORS_ALLOWED_ORIGINS = [
+
+    'http://localhost:3000',
 ]
 
 ROOT_URLCONF = 'Test.urls'
