@@ -13,7 +13,14 @@ function Form(props) {
 
     const updateArticle = () => {
         APIService.UpdateArticle(props.articleToBeEdited.id, {title, description})
-        .then(resp => props.updateUI(resp))
+        .then(resp => props.updateArticle(resp))
+        // .then(resp => console.log(resp))
+    }
+
+    const insertArticle = () => {
+        APIService.InsertArticle({title, description})
+        .then(resp => props.createArticle(resp))
+        // .then(resp => console.log(resp))
     }
 
   return (
@@ -35,11 +42,20 @@ function Form(props) {
                     placeholder='Please enter a description...' value={ description }
                     onChange={ e => setDescription(e.target.value) }></textarea>
                 </div>
+
                 <div className='my-4'>
-                    <button className='btn btn-success' 
-                    onClick={ updateArticle }>
-                        Update Article
-                    </button>
+                    {
+                        props.articleToBeEdited.id ?
+                            <button className='btn btn-success' 
+                                onClick={ updateArticle }>
+                                Update
+                            </button>
+                        : 
+                            <button className='btn btn-warning' 
+                                onClick={ insertArticle }>
+                                Add
+                            </button>
+                    }
                 </div>
             </>
         ): null}

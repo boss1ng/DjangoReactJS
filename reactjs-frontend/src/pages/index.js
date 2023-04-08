@@ -28,10 +28,27 @@ export default function Home() {
     .catch(error => console.log(error))
   }, [])
 
+  // PASS THE SELECTED (for Update) ARTICLE
   const updateArticle = (articles) => {
     setEditArticle(articles)
   }
 
+  // PASS THE SELECTED (for Remove) ARTICLE
+  const deleteArticle = (removeArticle) => {
+    const new_article = articles.filter(myArticle => {
+      if (myArticle.id === removeArticle.id) {
+        return false;
+      }
+
+      else {
+        return true;
+      }
+    })
+    
+    setArticles(new_article)
+  }
+
+  // PASS THE UPDATED ARTICLE (not saved yet)
   const UpdatedInformation = (updatedArticle) => {
     const new_article = articles.map(myArticle => {
       if (myArticle.id === updatedArticle.id) {
@@ -44,6 +61,18 @@ export default function Home() {
     })
 
     setArticles(new_article)
+  }
+
+  // SET TITLE & DESCRIPTION AS BLANK TEXT (to be used in Create/Add)
+  const newArticle = () => {
+    setEditArticle({title: '', description: ''})
+  }
+
+  // PASS EMPTY ARTICLE (Create/Add)
+  const InsertedInformation = (newArticle) => {
+    const new_article = [...articles, newArticle]
+    setArticles(new_article)
+    setEditArticle({title: '', description: ''})
   }
 
   return (
@@ -59,14 +88,30 @@ export default function Home() {
         <div className='container bg-dark text-white'>
           <div style={{textAlign: 'center', padding: '10px'}}>
             <h1>Django & ReactJS</h1>
+
+            <div className='row'>
+              <div className='col'>
+                <button className='btn btn-primary'
+                  onClick={ newArticle }>
+                  New Article
+                </button>
+              </div>
+            </div>
+
           </div>
 
           <div className={styles.container}>
-            <ArticleList articlesList = {articles} articleBtn = {updateArticle}></ArticleList>
+            <ArticleList
+                articlesList = {articles}
+                articleBtn = {updateArticle}
+                deleteBtn = {deleteArticle}>
+            </ArticleList>
 
             {
               editedArticle ? 
-                <Form articleToBeEdited = {editedArticle} updateUI = {UpdatedInformation}/>
+                <Form articleToBeEdited = {editedArticle} 
+                updateArticle = {UpdatedInformation}
+                createArticle = {InsertedInformation}/>
               : null
             }
             

@@ -1,10 +1,18 @@
 import React from 'react'
+import APIService from '../APIService'
 
 function ArticleList(props) {
 
   const updateArticle = (articlesList) => {
     // Notify the PARENT (index.js) of which article has been clicked.
     props.articleBtn(articlesList)
+  }
+
+  const deleteArticle = (articlesList) => {
+    // Notify the PARENT (index.js) of which article has been clicked.
+    APIService.DeleteArticle(articlesList.id)
+    .then( () => props.deleteBtn(articlesList))
+    .catch(error => console.log(error))
   }
 
   return (
@@ -24,7 +32,10 @@ function ArticleList(props) {
                     </div>
 
                     <div className='col-md-1'>
-                      <button className='btn btn-danger'>Delete</button>
+                      <button className='btn btn-danger'
+                      onClick={ () => deleteArticle(articlesList) }>
+                          Delete
+                      </button>
                     </div>
                   </div>
 
