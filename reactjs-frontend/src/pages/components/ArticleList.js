@@ -1,6 +1,12 @@
 import React from 'react'
 
 function ArticleList(props) {
+
+  const updateArticle = (articlesList) => {
+    // Notify the PARENT (index.js) of which article has been clicked.
+    props.articleBtn(articlesList)
+  }
+
   return (
     <div>
         {props.articlesList && props.articlesList.map(articlesList => {
@@ -8,7 +14,21 @@ function ArticleList(props) {
                 <div key={articlesList.id} className='container'>
                   <h3>{ articlesList.title }</h3>
                   <p>{ articlesList.description }</p>
-                  <hr/>
+
+                  <div className='row'>
+                    <div className='col-md-1'>
+                      <button className='btn btn-primary'
+                      onClick={ () => updateArticle(articlesList) }>
+                          Update
+                      </button>
+                    </div>
+
+                    <div className='col-md-1'>
+                      <button className='btn btn-danger'>Delete</button>
+                    </div>
+                  </div>
+
+                  <hr />
                 </div>
               );
             })}

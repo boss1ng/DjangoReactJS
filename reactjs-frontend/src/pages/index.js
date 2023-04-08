@@ -7,10 +7,12 @@ import styles from '@/styles/Home.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import React, { useState, useEffect } from 'react'
 import ArticleList from './components/ArticleList'
+import Form from './components/Form'
 
 export default function Home() {
 
   const [articles, setArticles] = useState([])
+  const [editedArticle, setEditArticle] = useState(null)
 
   useEffect( () => {
     fetch('http://127.0.0.1:8000/articles/', {
@@ -25,6 +27,24 @@ export default function Home() {
     .then(resp => setArticles(resp))
     .catch(error => console.log(error))
   }, [])
+
+  const updateArticle = (articles) => {
+    setEditArticle(articles)
+  }
+
+  const UpdatedInformation = (updatedArticle) => {
+    const new_article = articles.map(myArticle => {
+      if (myArticle.id === updatedArticle.id) {
+        return updatedArticle;
+      }
+
+      else {
+        return myArticle;
+      }
+    })
+
+    setArticles(new_article)
+  }
 
   return (
     <>
@@ -42,7 +62,14 @@ export default function Home() {
           </div>
 
           <div className={styles.container}>
-            <ArticleList articlesList = {articles}></ArticleList>
+            <ArticleList articlesList = {articles} articleBtn = {updateArticle}></ArticleList>
+
+            {
+              editedArticle ? 
+                <Form articleToBeEdited = {editedArticle} updateUI = {UpdatedInformation}/>
+              : null
+            }
+            
           </div>
         </div>
       </main>
