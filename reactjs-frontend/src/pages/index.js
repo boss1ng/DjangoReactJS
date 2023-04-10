@@ -6,8 +6,18 @@ import styles from '@/styles/Home.module.css'
 // ADDED
 import 'bootstrap/dist/css/bootstrap.min.css'
 import React, { useState, useEffect } from 'react'
+// import { Route, BrowserRouter } from 'react-router-dom'
+// import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
+// import { Link } from 'next/link'
+import { BrowserRouter, Routes, Route} from "react-router-dom";
+
+// COMPONENTS
 import ArticleList from './components/ArticleList'
 import Form from './components/Form'
+import Login from './components/Login'
+import Routing from './components/Router'
+
+// ----------------------------------------------------------------------------------------------------------------------
 
 export default function Home() {
 
@@ -101,6 +111,7 @@ export default function Home() {
           </div>
 
           <div className={styles.container}>
+
             <ArticleList
                 articlesList = {articles}
                 articleBtn = {updateArticle}
@@ -111,7 +122,7 @@ export default function Home() {
               editedArticle ? 
                 <Form articleToBeEdited = {editedArticle} 
                 updateArticle = {UpdatedInformation}
-                createArticle = {InsertedInformation}/>
+                createArticle = {InsertedInformation} />
               : null
             }
             
