@@ -4,6 +4,10 @@ from .models import Article
 from django.contrib.auth.models import User
 from rest_framework.authtoken.views import Token
 
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
 
 
 class ArticleSerializer(serializers.ModelSerializer):
@@ -24,13 +28,16 @@ class UserSerializer(serializers.ModelSerializer):
         }}
 
     # Passwords must be hashed / encrypted.
-    # Tokens must be dynamically generated in every user.
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
-        Token.objects.create(user = user)
+        # Token.objects.create(user = user)
         return user
 
-    
+# Tokens must be dynamically generated in every user.
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
 
 
 
